@@ -247,17 +247,17 @@ In the following example, we are selecting three columns of observations only: �
                               wind_shield_length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span>,
                               color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">colors</span>, <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">pseudo_car_data</span>,,n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
-<pre><code>##   obs cabin_length door_length wind_shield_length  color
-## 1   1     5.888524    2.332473           5.374240 yellow
-## 2   2     5.929073    1.223836           5.936480  green
-## 3   3     6.816316    2.020962           4.808456  green</code></pre>
+<pre><code>##   obs cabin_length door_length wind_shield_length color
+## 1   1     7.138345    2.021677           5.006429   red
+## 2   2     5.392864    1.193269           5.605168   red
+## 3   3     5.681535    2.651992           4.072557 green</code></pre>
 <p>Now, we can use the <span class="math inline">\(contains()\)</span> function to select those names that contain the string “length”.</p>
 <div class="sourceCode" id="cb164"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">pseudo_car_data</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">contains</a></span><span class="op">(</span><span class="st">"length"</span><span class="op">)</span><span class="op">)</span>,n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>##   cabin_length door_length wind_shield_length
-## 1     5.888524    2.332473           5.374240
-## 2     5.929073    1.223836           5.936480
-## 3     6.816316    2.020962           4.808456</code></pre>
+## 1     7.138345    2.021677           5.006429
+## 2     5.392864    1.193269           5.605168
+## 3     5.681535    2.651992           4.072557</code></pre>
 </div>
 <div id="filter" class="section level3">
 <h3>
@@ -472,9 +472,9 @@ Grouping function in dplyr groups data based on the categories in the assigned c
                           age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">40</span><span class="op">:</span><span class="fl">80</span>, <span class="fl">3</span>, replace <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span>
 <span class="va">pseudo_missing_data</span></code></pre></div>
 <pre><code>##     name age
-## 1    Tom  42
-## 2    Jay  65
-## 3  Marry  43
+## 1    Tom  61
+## 2    Jay  59
+## 3  Marry  74
 ## 4   Lexa  NA
 ## 5 Garcia  NA</code></pre>
 <p>In the example, we can see that Lexa and Garcia’s ages are missing. We will use mutate function to impute the missing values by using the mean of the rest of the ages (i.e. age of Tom, Jay, and Marry). The <span class="math inline">\(is.na()\)</span> function is used to check if the entry contain NA values.</p>
@@ -482,12 +482,12 @@ Grouping function in dplyr groups data based on the categories in the assigned c
 <code class="sourceCode R"><span class="va">imputed_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="va">pseudo_missing_data</span>,
                        age <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">age</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>, <span class="va">age</span><span class="op">)</span><span class="op">)</span>
 <span class="va">imputed_data</span></code></pre></div>
-<pre><code>##     name age
-## 1    Tom  42
-## 2    Jay  65
-## 3  Marry  43
-## 4   Lexa  50
-## 5 Garcia  50</code></pre>
+<pre><code>##     name      age
+## 1    Tom 61.00000
+## 2    Jay 59.00000
+## 3  Marry 74.00000
+## 4   Lexa 64.66667
+## 5 Garcia 64.66667</code></pre>
 </div>
 <div id="imputation-removing-observations" class="section level4">
 <h4>
@@ -497,9 +497,9 @@ Grouping function in dplyr groups data based on the categories in the assigned c
 <div class="sourceCode" id="cb198"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/na.omit.data.table.html">na.omit</a></span><span class="op">(</span><span class="va">pseudo_missing_data</span><span class="op">)</span></code></pre></div>
 <pre><code>##    name age
-## 1   Tom  42
-## 2   Jay  65
-## 3 Marry  43</code></pre>
+## 1   Tom  61
+## 2   Jay  59
+## 3 Marry  74</code></pre>
 <p>We can see that the latter two rows (i.e. observations of Lexa and Garcia) are completely removed!</p>
 </div>
 <div id="useful-helper-functions-for-mutate" class="section level4">
@@ -666,7 +666,7 @@ Grouping function in dplyr groups data based on the categories in the assigned c
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>EDAV Fall 2021 Tues/Thurs Community Contributions</strong>" was written by . It was last built on 2021-11-05.</p>
+    <p>"<strong>EDAV Fall 2021 Tues/Thurs Community Contributions</strong>" was written by . It was last built on 2021-11-06.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
